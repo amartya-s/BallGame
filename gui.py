@@ -33,7 +33,6 @@ class Game(tk.Frame):
         self.setup_widgets()
 
     def setup_window(self):
-        # self.master.update()
         master_window_width = 1100
         print(master_window_width)
         control_window = tk.Frame(self.master, bg='pink', width=master_window_width / 4)
@@ -43,7 +42,7 @@ class Game(tk.Frame):
         game_window = tk.Frame(self.master, bg='green', width=(3 / 4) * master_window_width)
         game_window.pack(side=tk.RIGHT, fill=tk.BOTH)
 
-        game_canvas = GameCanvas(game_window, bg='green', width=(3 / 4) * master_window_width)
+        game_canvas = GameCanvas(game_window, bg='black', width=(3 / 4) * master_window_width)
         game_canvas.pack(expand=True, fill=tk.BOTH)
         self.game_canvas = game_canvas
 
@@ -66,10 +65,15 @@ class Game(tk.Frame):
         play_bt = tk.Button(self.control_window, text='Play', command=self.play, width=20, height=2)
         play_bt.pack(pady=100)
 
+        status_label = tk.Label(self.control_window, width=30, height=2, bg='pink')
+        status_label.pack()
+        self.status_label = status_label
+
     def play(self):
-        self.service = GameService(self.game_canvas, self.score_var)
+        self.service = GameService(self, self.score_var)
         self.service.initialize()
         self.service.start_game()
+
 
 
 if __name__ == '__main__':

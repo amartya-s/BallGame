@@ -5,7 +5,7 @@ from BallGame.direction import Direction
 
 class Ball(object):
     BALL_INDEXES = []
-    PIXEL_PER_MOVE = 1
+    PIXEL_PER_MOVE = 2
 
     def __init__(self, parent, speed, collision_callback, *coords):
         self.parent = parent
@@ -16,8 +16,10 @@ class Ball(object):
         self.dx = 0
         self.dy = 10
         self.angle_wrt_x_axis = 90
+        self.in_collision = False
 
         self.direction = None
+        self.is_frozen = False
 
         self.create_ball(coords)
 
@@ -25,10 +27,17 @@ class Ball(object):
         print(Ball.BALL_INDEXES)
 
     def create_ball(self, coords):
-        self.canvas_index = self.parent.create_oval(coords, fill='red')
+        # self.canvas_index=self.parent.create_rectangle(coords, fill='blue')
+        self.canvas_index = self.parent.create_oval(coords, fill='green')
+
         print("oval created")
 
+    def freeze(self):
+        self.is_frozen = True
+
     def move(self):
+        if self.is_frozen:
+            return
         prev_cords = self.parent.coords(self.canvas_index)[0], self.parent.coords(self.canvas_index)[1]
         self.collision_callback(self)
         # print("Di:{}".format(self.direction))
@@ -77,3 +86,20 @@ class Ball(object):
         # self.coords = (x1,y1, x2, y2)
 
         self.parent.after(self.speed, self.move)
+
+    def destroy(self):
+        # collapse the ball and then destroy
+
+        coords = self.parent.coords(self.canvas_index)
+        self.direction = None
+
+        # collapse till diameter becomes < 5pixels
+        if (coords[2]-coords[0]) < 5:
+            self.parent.delete(self.canvas_index)
+            return
+        print("Diameter: {}".format(coords[2]-coords[0]))
+        self.parent.coords(self.canvas_index, coords[0]+1, coords[1]+1, coords[2]-1, coords[3]-1)
+        # self.parent.update()
+
+        self.parent.after(5, lambda: self.destroy())
+
