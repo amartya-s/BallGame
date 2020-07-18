@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from BallGame.service import GameService
+from BallGame.services.service import GameService
 
 
 class GameCanvas(tk.Canvas):
@@ -65,15 +65,15 @@ class Game(tk.Frame):
         play_bt = tk.Button(self.control_window, text='Play', command=self.play, width=20, height=2)
         play_bt.pack(pady=100)
 
-        status_label = tk.Label(self.control_window, width=30, height=2, bg='pink')
+        status_label = tk.Label(self.control_window, width=30, height=5, bg='pink')
         status_label.pack()
         self.status_label = status_label
 
     def play(self):
+        self.game_canvas.delete("all")
         self.service = GameService(self, self.score_var)
         self.service.initialize()
         self.service.start_game()
-
 
 
 if __name__ == '__main__':
