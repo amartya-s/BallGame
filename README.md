@@ -7,6 +7,7 @@ A simple "shoot the balls" game application
 #### This application can be run using either of the below methods
 - Directly executing the python <b><i>game.py</i></b> file
 - Executing the <b><i>game.exe</i></b> file present under <i>dist</i> directory
+- To move the block use left(<) and right(>) arrow keys. To shoot press space bar
     
 ### Note
 -  The executable file game.exe  file has been created using external open source tool <a href='http://www.pyinstaller.org/'>pyinstaller</a>
